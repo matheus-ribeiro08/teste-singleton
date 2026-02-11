@@ -1,20 +1,26 @@
 package org.example;
 
 public class SIngleton {
-    // 'volatile' garante que alterações sejam visíveis para todos os threads imediatamente
+
+    // A única impressora do escritório. 'volatile' garante que todos a vejam imediatamente.
     private static volatile SIngleton instance;
 
-    // Construtor privado evita instanciação externa
+    // Construtor privado: Proíbe funcionários de comprarem impressoras por conta própria.
     private SIngleton() {
-        // Inicialização de recursos (ex: conexão com banco)
+        // Instalação dos drivers...
     }
 
+    // O Balcão de TI: O único lugar para pedir a impressora.
     public static SIngleton getInstance() {
-        // Primeiro cheque (sem bloqueio) para performance
+
+        // 1. Olhada rápida: Se a impressora já existe, usa ela e economiza tempo.
         if (instance == null) {
-            // Bloco sincronizado apenas se a instância não existir
+
+            // 2. A Fila (Trava): Só um funcionário entra na sala de instalação por vez.
             synchronized (SIngleton.class) {
-                // Segundo cheque (dentro do bloqueio) para segurança
+
+                // 3. A Confirmação (Double Check): "O colega da frente já instalou enquanto eu esperava?"
+                // Se sim, não instala outra. Se não, instala a primeira.
                 if (instance == null) {
                     instance = new SIngleton();
                 }
